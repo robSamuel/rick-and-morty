@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: "/rick-and-morty",
   siteMetadata: {
     title: `Rick and Morty`,
     description: `This is a Gatsby project in which the app consume the Rick and Morty api.`,
