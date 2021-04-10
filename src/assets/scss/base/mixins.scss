@@ -1,0 +1,7 @@
+@mixin OnPointerEvent {
+    &:hover,
+    &:active,
+    &:focus {
+        @content;
+    }
+}
