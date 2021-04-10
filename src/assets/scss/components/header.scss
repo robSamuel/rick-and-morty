@@ -1,0 +1,35 @@
+.Header  {
+    &-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 1rem;
+        z-index: 3;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    &-menu {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    &-item {
+        display: inline-block;
+    }
+
+    &-link {
+        color: $black;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0 1rem;
+
+    }
+
+    &-background {
+        
+    }
+}

@@ -1,26 +1,16 @@
 import React from 'react';
-import { useStaticQuery, graphql, Link } from "gatsby";
-import Img from "gatsby-image";
+import { Link } from 'gatsby';
+import logo from '../../assets/images/logo.png';
 
 const Logo = () => {
-    const data = useStaticQuery(graphql`
-        query {
-            placeholderImage: file(relativePath: { eq: "logo.png" }) {
-                childImageSharp {
-                    fluid(maxWidth: 300) {
-                        ...GatsbyImageSharpFluid
-                    }
-                }
-            }
-        }
-    `);
-    const component = !data?.placeholderImage?.childImageSharp?.fluid
+    const component = !logo
         ? <div>Picture not found</div>
         : (
             <Link to="/">
-                <Img
+                <img
                     className="Logo"
-                    fluid={data.placeholderImage.childImageSharp.fluid}
+                    src={logo}
+                    alt="Logo"
                 />
             </Link>
         );
