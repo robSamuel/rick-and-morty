@@ -1,0 +1,24 @@
+.Footer {
+    display: flex;
+    align-items: center;
+    background-color: $mainColor;
+    bottom: 0;
+    height: 400px;
+    justify-content: space-evenly;
+    margin-top: 2rem;
+    position: fixed;
+    width: 100%;
+
+    @include media-breakpoint-down(sm) {
+        flex-direction: column;
+        height: 270px;
+    }
+
+    &-link {
+        color: $footerLinks;
+
+        @include OnPointerEvent {
+            color: $footerLinks;
+        }
+    }
+}

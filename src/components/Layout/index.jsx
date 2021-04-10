@@ -9,6 +9,7 @@
  import PropTypes from 'prop-types';
  
  import Header from '../Header';
+ import Footer from '../Footer';
  import '../../assets/scss/main.scss';
  
  const Layout = ({ children }) => {
@@ -23,20 +24,8 @@
            }}
        >
          <main>{children}</main>
-         <footer
-             style={{
-                 marginTop: `2rem`,
-             }}
-         >
-             © {new Date().getFullYear()}, Built with
-             {` `}
-             <a href="https://www.gatsbyjs.com">Gatsby</a>
-             {` `}
-             and develop by
-             {` `}
-             <a href="https://github.com/robSamuel">Robert Samuel</a>
-         </footer>
        </div>
+       <Footer />
      </>
    )
  };
