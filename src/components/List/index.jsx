@@ -85,9 +85,6 @@ const List = props => {
                     next={fetchData}
                     scrollableTarget={containerId}
                     scrollThreshold={1}
-                    loader={
-                        <h3>Loading...</h3>
-                    }
                 >
                     {renderList()}
                 </InfiniteScroll>
