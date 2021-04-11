@@ -26,15 +26,15 @@ export const retrieveCharacters = async (page, options = {}) => {
         url = `${url}&gender=${gender}`;
 
     try {
-        const fetchedData = await httpClient({
+        const { data, status } = await httpClient({
             method: 'GET',
             url,
-            params
         });
 
         return {
-            pagination: fetchedData.info,
-            results: fetchedData.results
+            pagination: data.info,
+            results: data.results,
+            status
         };
     } catch (error) {
         return { error };
