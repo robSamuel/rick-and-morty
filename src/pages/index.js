@@ -1,6 +1,6 @@
 import React, { useState, } from 'react';
 import { retrieveCharacters } from '../services/characters';
-import Card from '../components/Card';
+import { retrieveEpisodes } from '../services/episodes';
 import Layout from '../components/Layout';
 import List from '../components/List';
 import SEO from '../components/seo';
@@ -23,7 +23,11 @@ const IndexPage = () => {
     const fetchCharacters = async (pageNumber) => {
         const data = await retrieveCharacters(pageNumber);
 
-        console.log(data);
+        return data;
+    };
+
+    const fetchEpisodes = async (pageNumber) => {
+        const data = await retrieveEpisodes(pageNumber);
 
         return data;
     };
@@ -76,7 +80,10 @@ const IndexPage = () => {
                             />
                         </TabPane>
                         <TabPane tabId="2">
-
+                            <List
+                                link="episode"
+                                retrieveData={fetchEpisodes}
+                            />
                         </TabPane>
                         <TabPane tabId="3">
 

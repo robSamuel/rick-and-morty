@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
+import { getThumbnailUrl } from '../../utils';
 
 const Card = props => {
     const {
@@ -14,7 +15,7 @@ const Card = props => {
         <div className="Card">
             <Link to={`/${link}/${id}`} state={{ id: id }}>
                 <img
-                    src={image}
+                    src={getThumbnailUrl(image, link)}
                     alt=""
                     className="Card-image"
                 />
@@ -29,7 +30,7 @@ Card.propTypes = {
     image: PropTypes.string,
     link: PropTypes.oneOf([
         'character',
-        'episodes',
+        'episode',
         'location']
     ).isRequired,
     title: PropTypes.string.isRequired
