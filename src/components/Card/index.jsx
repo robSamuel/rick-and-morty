@@ -30,7 +30,7 @@ Card.propTypes = {
     link: PropTypes.oneOf([
         'character',
         'episodes',
-        'locations']
+        'location']
     ).isRequired,
     title: PropTypes.string.isRequired
 };
