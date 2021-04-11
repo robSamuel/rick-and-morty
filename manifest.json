@@ -1,5 +1,9 @@
 {
   "main.js": "render-page.js",
   "main.js.map": "render-page.js.map",
+  "static/default-episode.png": "static/default-episode-985174bc1dac04dc5286c4b1e4fe8e2a.png",
+  "static/default-location.png": "static/default-location-ce21cfb86cf04e11472ba3f799685f0d.png",
+  "static/default-thumbnail.jpeg": "static/default-thumbnail-6ae27f26de645547a579d5d8bfec563a.jpeg",
+  "static/footer-logo.png": "static/footer-logo-4bfa3d4defc8e015c5898446d8d5b35c.png",
   "static/logo.png": "static/logo-5ab40a929176257004a98b46f9eca32e.png"
 }
