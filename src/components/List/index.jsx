@@ -99,7 +99,7 @@ const List = props => {
 List.propTypes = {
     link: PropTypes.oneOf([
         'character',
-        'episodes',
+        'episode',
         'location']
     ).isRequired,
     retrieveData: PropTypes.func.isRequired

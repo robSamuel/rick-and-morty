@@ -1,6 +1,7 @@
 import React, { useState, } from 'react';
 import { retrieveCharacters } from '../services/characters';
 import { retrieveEpisodes } from '../services/episodes';
+import { retrieveLocations } from '../services/locations';
 import Layout from '../components/Layout';
 import List from '../components/List';
 import SEO from '../components/seo';
@@ -28,6 +29,12 @@ const IndexPage = () => {
 
     const fetchEpisodes = async (pageNumber) => {
         const data = await retrieveEpisodes(pageNumber);
+
+        return data;
+    };
+
+    const fetchLocations = async (pageNumber) => {
+        const data = await retrieveLocations(pageNumber);
 
         return data;
     };
@@ -86,7 +93,10 @@ const IndexPage = () => {
                             />
                         </TabPane>
                         <TabPane tabId="3">
-
+                            <List
+                                link="location"
+                                retrieveData={fetchLocations}
+                            />
                         </TabPane>
                     </TabContent>
                 </div>
