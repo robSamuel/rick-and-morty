@@ -1,17 +1,20 @@
 .Footer {
-    display: flex;
-    align-items: center;
     background-color: $mainColor;
-    bottom: 0;
-    height: 400px;
-    justify-content: space-evenly;
+    height: 300px;
     margin-top: 2rem;
-    position: fixed;
     width: 100%;
 
     @include media-breakpoint-down(sm) {
-        flex-direction: column;
-        height: 270px;
+        height: 220px;
+    }
+
+    &-column {
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    &-logo {
+        width: 200px;
     }
 
     &-link {
