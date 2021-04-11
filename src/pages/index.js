@@ -37,12 +37,6 @@ const IndexPage = () => {
     return (
         <Layout>
             <SEO title="Home" />
-            <Card
-                id={1}
-                image="https://rickandmortyapi.com/api/character/avatar/2.jpeg"
-                link="character"
-                title="Rick Sanchez"
-            />
             <section className="Home">
                 <div className="container-fluid Home-container">
                     <Nav
