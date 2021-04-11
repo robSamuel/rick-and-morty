@@ -3,9 +3,18 @@
     width: 200px;
     position: relative;
 
+    @include media-breakpoint-down(sm) {
+        height: 200px;
+        width: 150px;
+    }
+
     &-image {
         height: 230px;
         width: 100%;
+
+        @include media-breakpoint-down(sm) {
+            height: 160px;
+        }
     }
 
     &-title {
@@ -15,6 +24,11 @@
         margin-bottom: 0;
         margin-left: 35px;
         overflow: hidden;
-        padding: 10px
+        padding: 10px;
+
+        @include media-breakpoint-down(sm) {
+            font-size: 13px;
+            height: 20%;
+        }
     }
 }
