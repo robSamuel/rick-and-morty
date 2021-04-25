@@ -10,7 +10,6 @@ import List from '../components/List';
 import SEO from '../components/seo';
 
 const Characters = () => {
-    // const [featuredIds, setFeaturedIds] = useState([]);
     const [featuredCharacters, setFeaturedCharacters] = useState([]);
 
     useEffect(() => {
@@ -59,7 +58,7 @@ const Characters = () => {
         <Layout>
             <SEO title="Characters List" />
             <section className="Characters">
-                <div className="FeaturedCharacters">
+                <div className="container-fluid FeaturedCharacters">
                     <span className="FeaturedCharacters-title">
                         Featured Characters:
                     </span>

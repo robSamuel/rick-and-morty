@@ -1,4 +1,11 @@
 .Header  {
+    background-color: $mainColor;
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9000;
+
     &-content {
         display: flex;
         align-items: center;
@@ -19,17 +26,18 @@
 
     &-item {
         display: inline-block;
+        text-align: center;
     }
 
     &-link {
-        color: $black;
+        color: $footerLinks;
         font-size: 1.3rem;
         font-weight: 600;
         margin: 0 1rem;
 
-    }
-
-    &-background {
-        
+        @include OnPointerEvent {
+            color: $white;
+            text-decoration: none;
+        }
     }
 }
