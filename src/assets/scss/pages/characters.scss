@@ -1,0 +1,28 @@
+.Characters {
+    &-list {
+        margin-top: 50px;
+    }
+}
+
+.FeaturedCharacters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-title {
+        font-size: 22px;
+        font-weight: 500;
+        margin: 20px 0 10px 0;
+    }
+
+    &-list {
+        align-items: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .Card {
+        display: inline-block;
+    }
+}

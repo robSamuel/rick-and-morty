@@ -1,5 +1,7 @@
 import { httpClient } from '../httpClient';
 
+const endpointURL = '/character';
+
 export const retrieveCharacters = async (page, options = {}) => {
     const {
         name = '',
@@ -8,7 +10,7 @@ export const retrieveCharacters = async (page, options = {}) => {
         types = '',
         gender = ''
     } = options;
-    let url = `/character?page=${page}`;
+    let url = `${endpointURL}?page=${page}`;
 
     if(name)
         url = `${url}&name=${name}`;
@@ -34,6 +36,24 @@ export const retrieveCharacters = async (page, options = {}) => {
         return {
             pagination: data.info,
             results: data.results,
+            status
+        };
+    } catch (error) {
+        return { error };
+    }
+};
+
+export const retrieveMultipleCharacters = async (ids) => {
+    const url = `${endpointURL}/${ids.join()}`
+
+    try {
+        const { data, status } = await httpClient({
+            method: 'GET',
+            url,
+        });
+
+        return {
+            results: data,
             status
         };
     } catch (error) {
