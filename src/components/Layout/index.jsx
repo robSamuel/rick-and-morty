@@ -15,13 +15,13 @@
  const Layout = ({ children }) => {
  
     return (
-        <>
+        <div className="Layout">
             <Header />
-            <div>
+            <div className="Layout-container">
                 <main>{children}</main>
                 <Footer />
             </div>
-        </>
+        </div>
     );
  };
  
