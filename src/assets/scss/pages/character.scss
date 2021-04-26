@@ -1,0 +1,16 @@
+.CharacterDetails {
+    padding: 30px;
+    
+    &-name {
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    &-label {
+        font-weight: 500;
+    }
+
+    &-value {
+        margin-left: 5px;
+    }
+}
