@@ -1,7 +1,6 @@
 .Footer {
     background-color: $mainColor;
     height: 300px;
-    margin-top: 2rem;
     width: 100%;
 
     @include media-breakpoint-down(sm) {
@@ -21,7 +20,7 @@
         color: $footerLinks;
 
         @include OnPointerEvent {
-            color: $footerLinks;
+            color: $white;
         }
     }
 }
