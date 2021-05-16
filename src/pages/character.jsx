@@ -13,9 +13,7 @@ const INITIAL_VALUE = {
     name: '',
     image: '',
     gender: '',
-    location: 0,
     episodes: [],
-    origin: {},
     species: '',
     status: '',
     type: ''
@@ -23,11 +21,13 @@ const INITIAL_VALUE = {
 
 const Character = props => {
     const [data, setData] = useState(INITIAL_VALUE);
-    const [isLoadingOrigin, setIsLoadingOrigin] = useState(false);
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
     const [location, setLocation] = useState({});
+    const [origin, setOrigin] = useState({});
+    const [isLoadingOrigin, setIsLoadingOrigin] = useState(false);
     const { location: { state }, params } = props;
     const id = state ? state.id : params.id;
-    console.log(props);
+    console.log(data);
 
     useEffect(() => {
         if(id)
@@ -35,6 +35,7 @@ const Character = props => {
     }, [id]);
 
     const fetchData = async (id) => {
+        setIsLoadingLocation(true);
         setIsLoadingOrigin(true);
 
         const { results, status } = await retrieveCharacterDetails(id);
@@ -49,19 +50,32 @@ const Character = props => {
             image: results.image || '',
             gender: results.gender || '',
             episodes: results.episode || [], //it needs to call an endpoint or show the list only
-            origin: results.origin || {}, //it needs to call an endpoint
             species: results.species || '',
             status: results.status || '',
             type: results.type || ''
         };
+        const isLocationEqualToOrigin = results.location.url === results.origin.url;
 
         setData(newData);
-        fetchLocation(results.location);
+        fetchLocation(
+            results.location,
+            setLocation, 
+            setIsLoadingLocation,
+            isLocationEqualToOrigin
+        );
+
+        if(!isLocationEqualToOrigin)
+            fetchLocation(results.origin, setOrigin, setIsLoadingOrigin);
     };
 
-    const fetchLocation = async (location) => {
+    const fetchLocation = async (
+        location,
+        setInformation,
+        setLoading,
+        isLocationEqualToOrigin = false
+    ) => {
         if(!location) {
-            setIsLoadingOrigin(false);
+            setLoading(false);
             return;
         }
 
@@ -69,7 +83,7 @@ const Character = props => {
         const { data, status } = await retrieveLocationDetail(id);
 
         if(status !== 200 && !data){
-            setIsLoadingOrigin(false);
+            setLoading(false);
 
             return; //TODO: Set something as default when no data is returned
         }
@@ -82,8 +96,14 @@ const Character = props => {
             type: data.type || ''
         };
 
-        setLocation(newData);
-        setIsLoadingOrigin(false);
+        setInformation(newData);
+        setLoading(false);
+
+        if(isLocationEqualToOrigin) {
+            console.log('are the same');
+            setOrigin(newData);
+            setIsLoadingOrigin(false);
+        }
     };
 
     const renderLine = (label, value) => {
@@ -102,8 +122,8 @@ const Character = props => {
         )
     };
 
-    const renderLocation = () => {
-        if(isLoadingOrigin)
+    const renderLocation = (label, info, loading) => {
+        if(loading)
             return (
                 <Spinner
                     className="CharacterDetails-location-spinner"
@@ -114,11 +134,13 @@ const Character = props => {
 
         return (
             <Fragment>
-                <h3>Location</h3>
-                {renderLine('Name', location.name)}
-                {renderLine('Dimension', location.dimension)}
-                {renderLine('Residents', location.residentsCount)}
-                {renderLine('Type', location.type)}
+                <h3>{label}</h3>
+                <div>
+                    {renderLine('Name', info.name)}
+                    {renderLine('Dimension', info.dimension)}
+                    {renderLine('Residents', info.residentsCount)}
+                    {renderLine('Type', info.type)}
+                </div>
             </Fragment>
         );
     };
@@ -131,7 +153,7 @@ const Character = props => {
                         <div className="d-flex justify-content-center col-md-6 col-sm-12 margin-auto">
                             <img
                                 src={data.image}
-                                alt={data.name || ''}
+                                alt={data.name}
                             />
                         </div>
                         <div className="CharacterDetails-info col-md-6 col-sm-12 margin-auto">
@@ -143,14 +165,22 @@ const Character = props => {
                                     {renderLine('Status', data.status)}
                                     {renderLine('Gender', data.gender)}
                                     {renderLine('Species', data.species)}
-                                    {renderLine('Origin', data.origin.name || '')}
                                     {renderLine('Type', data.type)}
                                 </div>
                             </div>
                         </div>
-                        <div className="CharacterDetails-location-container col-sm-12 margin-auto">
-                            {renderLocation()}
+                        <div className="d-flex flex-column-sm col-sm-12">
+                            <div className="col-md-6 col-sm-12" />
+                            <div className="d-flex flex-column-sm px-0 col-md-6 col-sm-12">
+                                <div className="CharacterDetails-location-container col-md-6 col-sm-12 margin-auto">
+                                    {renderLocation('Origin', origin, isLoadingOrigin)}
+                                </div>
+                                <div className="CharacterDetails-location-container col-md-6 col-sm-12 margin-auto">
+                                    {renderLocation('Location', location, isLoadingLocation)}
+                                </div>
+                            </div>
                         </div>
+                        
                 </Container>
             </section>
         </Layout>

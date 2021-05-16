@@ -38,8 +38,15 @@
 
         &-container {
             height: 200px;
-            margin-bottom: 20px;
-            margin-top: 20px;
+
+            @include media-breakpoint-down(sm) {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding-bottom: 15px;
+                padding-top: 15px;
+            }
         }
     }
 }
