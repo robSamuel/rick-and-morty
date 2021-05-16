@@ -31,3 +31,13 @@ export const getThumbnailUrl = (url, type) => {
 
     return thumbnail;
 };
+
+export const retrieveIdFromURL = url => {
+    if(!url)
+        return 0;
+
+    const parts = url.split('/');
+    const id = +parts[parts.length -1];
+
+    return id;
+};
