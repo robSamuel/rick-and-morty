@@ -1,9 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
 // import PropTypes from 'prop-types';
 import { retrieveCharacterDetails } from '../services/characters';
+import { retrieveLocationDetail } from '../services/locations';
+import { retrieveIdFromURL } from '../utils';
 import Container from '../components/Container';
 import Layout from '../components/Layout';
 import SEO from '../components/seo';
+import Spinner from '../components/Loading';
 
 const INITIAL_VALUE = {
     id: 0,
@@ -20,16 +23,20 @@ const INITIAL_VALUE = {
 
 const Character = props => {
     const [data, setData] = useState(INITIAL_VALUE);
+    const [isLoadingOrigin, setIsLoadingOrigin] = useState(false);
+    const [location, setLocation] = useState({});
+    const { location: { state }, params } = props;
+    const id = state ? state.id : params.id;
+    console.log(props);
 
     useEffect(() => {
-        console.log(props);
-        const { location: { state }, params } = props;
-        const id = state ? state.id : params.id;
-
-        fetchData(id);
-    }, []);
+        if(id)
+            fetchData(id);
+    }, [id]);
 
     const fetchData = async (id) => {
+        setIsLoadingOrigin(true);
+
         const { results, status } = await retrieveCharacterDetails(id);
 
         console.log(status, results);
@@ -41,7 +48,6 @@ const Character = props => {
             name: results.name || '',
             image: results.image || '',
             gender: results.gender || '',
-            location: results.location || {}, //it needs to call an endpoint
             episodes: results.episode || [], //it needs to call an endpoint or show the list only
             origin: results.origin || {}, //it needs to call an endpoint
             species: results.species || '',
@@ -50,6 +56,34 @@ const Character = props => {
         };
 
         setData(newData);
+        fetchLocation(results.location);
+    };
+
+    const fetchLocation = async (location) => {
+        if(!location) {
+            setIsLoadingOrigin(false);
+            return;
+        }
+
+        const id = retrieveIdFromURL(location.url);
+        const { data, status } = await retrieveLocationDetail(id);
+
+        if(status !== 200 && !data){
+            setIsLoadingOrigin(false);
+
+            return; //TODO: Set something as default when no data is returned
+        }
+        
+        const newData = {
+            id: data.id || 0,
+            name: data.name || '',
+            dimension: data.dimension || '',
+            residentsCount: data.residents.length || 0,
+            type: data.type || ''
+        };
+
+        setLocation(newData);
+        setIsLoadingOrigin(false);
     };
 
     const renderLine = (label, value) => {
@@ -68,18 +102,39 @@ const Character = props => {
         )
     };
 
+    const renderLocation = () => {
+        if(isLoadingOrigin)
+            return (
+                <Spinner
+                    className="CharacterDetails-location-spinner"
+                    containerClass="CharacterDetails-location-spinner-container"
+                    type="grow"
+                />
+            );
+
+        return (
+            <Fragment>
+                <h3>Location</h3>
+                {renderLine('Name', location.name)}
+                {renderLine('Dimension', location.dimension)}
+                {renderLine('Residents', location.residentsCount)}
+                {renderLine('Type', location.type)}
+            </Fragment>
+        );
+    };
+
     return (
         <Layout>
             <SEO title="Character Details" />
             <section className="CharacterDetails">
                 <Container>
-                        <div className="d-flex justify-content-center col-lg-5 col-xl-6 col-md-6 col-sm-12 margin-auto">
+                        <div className="d-flex justify-content-center col-md-6 col-sm-12 margin-auto">
                             <img
                                 src={data.image}
                                 alt={data.name || ''}
                             />
                         </div>
-                        <div className="CharacterDetails-info col-lg-7 col-xl-6 col-md-6 col-sm-12 margin-auto">
+                        <div className="CharacterDetails-info col-md-6 col-sm-12 margin-auto">
                             <div>
                                 <h2 className="CharacterDetails-name">
                                     {data.name}
@@ -93,8 +148,8 @@ const Character = props => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col">
-                            
+                        <div className="CharacterDetails-location-container col-sm-12 margin-auto">
+                            {renderLocation()}
                         </div>
                 </Container>
             </section>
