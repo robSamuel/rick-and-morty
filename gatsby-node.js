@@ -9,6 +9,6 @@ exports.createPages = function({actions}) {
     actions.createPage({
         path: 'character',
         matchPath: '/character/:id',
-        component: require.resolve('./src/pages/character.js')
+        component: require.resolve('./src/pages/character.jsx')
     });
 };
