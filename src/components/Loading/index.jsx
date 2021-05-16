@@ -7,19 +7,23 @@ const Loading = props => {
         className,
         children,
         color,
-        size, 
+        containerClass,
+        size,
+        style,
         type
     } = props;
 
     return (
-        <div>
+        <div
+            className={containerClass}
+            style={style}
+        >
             <Spinner
                 className={className}
                 children={children}
                 color={color}
                 size={size}
                 type={type}
-                {...props}
             />
         </div>
     );
@@ -29,7 +33,9 @@ Loading.defaultProps = {
     children: '',
     className: '',
     color: 'info',
+    containerClass: '',
     size: 'md',
+    style: {},
     type: 'border'
 };
 
@@ -45,7 +51,9 @@ Loading.propTypes = {
         'info',
         'light',
         'dark']),
+    containerClass: PropTypes.string,
     size: PropTypes.oneOf(['sm', 'md', 'lg', 'xl']),
+    style: PropTypes.object,
     type: PropTypes.oneOf(['border', 'grow'])
 };
 
