@@ -1,0 +1,6 @@
+.flex-column-sm {
+    @include media-breakpoint-down(sm) {
+        display: flex;
+        flex-direction: column;
+    }
+}

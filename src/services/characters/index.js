@@ -60,3 +60,21 @@ export const retrieveMultipleCharacters = async (ids) => {
         return { error };
     }
 };
+
+export const retrieveCharacterDetails = async (id) => {
+    const url = `${endpointURL}/${id}`;
+
+    try {
+        const { data, status } = await httpClient({
+            method: 'GET',
+            url,
+        });
+
+        return {
+            results: data,
+            status
+        };
+    } catch (error) {
+        return { error };
+    }
+};
