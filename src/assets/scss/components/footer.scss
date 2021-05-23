@@ -3,7 +3,7 @@
     height: 300px;
     width: 100%;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         height: 220px;
     }
 

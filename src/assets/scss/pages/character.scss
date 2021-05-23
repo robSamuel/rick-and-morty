@@ -23,6 +23,12 @@
         margin-left: 5px;
     }
 
+    &-empty-container {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
     &-location {
         &-spinner-container {
             align-items: center;

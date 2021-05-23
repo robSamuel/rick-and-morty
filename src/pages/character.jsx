@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from 'react';
-// import PropTypes from 'prop-types';
 import { retrieveCharacterDetails } from '../services/characters';
 import { retrieveMultipleEpisodes } from '../services/episodes';
 import { retrieveLocationDetail } from '../services/locations';
@@ -90,12 +89,14 @@ const Character = props => {
         const { data, status } = await retrieveMultipleEpisodes(list);
 
         if(status !== 200 && !isNotEmptyArray(data)) {
-            setEpisodes([])
+            setEpisodes([]);
+            setIsLoadingEpisodes(false);
 
             return;
         }
 
         setEpisodes(data);
+        setIsLoadingEpisodes(false);
     };
 
     const fetchLocation = async (
@@ -151,15 +152,19 @@ const Character = props => {
         )
     };
 
+    const renderSpinner = () => {
+        return (
+            <Spinner
+                className="CharacterDetails-location-spinner"
+                containerClass="CharacterDetails-location-spinner-container"
+                type="grow"
+            />
+        );
+    }
+
     const renderLocation = (label, info, loading) => {
         if(loading)
-            return (
-                <Spinner
-                    className="CharacterDetails-location-spinner"
-                    containerClass="CharacterDetails-location-spinner-container"
-                    type="grow"
-                />
-            );
+            return renderSpinner();
 
         return (
             <Fragment>
@@ -175,14 +180,14 @@ const Character = props => {
     };
 
     const renderEpisodes = () => {
-        // if(!isNotEmptyArray(retrievedEpisodes))
-        //     return <Fragment />;
+        if(isLoadingEpisodes)
+            return renderSpinner();
 
         return (
             <List
                 inheritedList={episodes}
                 link="episode"
-                listTitle="Episodes"
+                listTitle="Episodes featuring this character"
                 useList={true}
             />
         )
@@ -212,9 +217,9 @@ const Character = props => {
                                 </div>
                             </div>
                         </div>
-                        <div className="d-flex flex-column-sm col-sm-12">
-                            <div className="col-md-6 col-sm-12" />
-                            <div className="d-flex flex-column-sm px-0 col-md-6 col-sm-12">
+                        <div className="d-flex flex-column-sm col-sm-12 pt-3">
+                            <div className="col-lg-6 CharacterDetails-empty-container" />
+                            <div className="d-flex flex-column-sm px-0 col-lg-6 col-md-12">
                                 <div className="CharacterDetails-location-container col-md-6 col-sm-12 margin-auto">
                                     {renderLocation('Origin', origin, isLoadingOrigin)}
                                 </div>
@@ -230,10 +235,6 @@ const Character = props => {
             </section>
         </Layout>
     );
-};
-
-Character.propTypes = {
-
 };
 
 export default Character;
