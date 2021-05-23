@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import FooterImg from '../../assets/images/footer-logo.png';
 
 const Footer = () => {
@@ -16,7 +16,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="col-12 col-md-6">
-                        <div className="Footer-column  d-flex h-100">
+                        <div className="Footer-column d-flex h-100">
                             <span>
                                 © {new Date().getFullYear()}, Built with
                                 {` `}
