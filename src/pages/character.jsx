@@ -1,10 +1,15 @@
 import React, { useState, useEffect, Fragment } from 'react';
 // import PropTypes from 'prop-types';
 import { retrieveCharacterDetails } from '../services/characters';
+import { retrieveMultipleEpisodes } from '../services/episodes';
 import { retrieveLocationDetail } from '../services/locations';
-import { retrieveIdFromURL } from '../utils';
+import {
+    isNotEmptyArray,
+    retrieveIdFromURL
+} from '../utils';
 import Container from '../components/Container';
 import Layout from '../components/Layout';
+import List from '../components/List';
 import SEO from '../components/seo';
 import Spinner from '../components/Loading';
 
@@ -13,7 +18,6 @@ const INITIAL_VALUE = {
     name: '',
     image: '',
     gender: '',
-    episodes: [],
     species: '',
     status: '',
     type: ''
@@ -21,13 +25,14 @@ const INITIAL_VALUE = {
 
 const Character = props => {
     const [data, setData] = useState(INITIAL_VALUE);
+    const [episodes, setEpisodes] = useState([]);
+    const [isLoadingEpisodes, setIsLoadingEpisodes] = useState(false);
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
     const [location, setLocation] = useState({});
     const [origin, setOrigin] = useState({});
     const [isLoadingOrigin, setIsLoadingOrigin] = useState(false);
     const { location: { state }, params } = props;
     const id = state ? state.id : params.id;
-    console.log(data);
 
     useEffect(() => {
         if(id)
@@ -49,12 +54,12 @@ const Character = props => {
             name: results.name || '',
             image: results.image || '',
             gender: results.gender || '',
-            episodes: results.episode || [], //it needs to call an endpoint or show the list only
             species: results.species || '',
             status: results.status || '',
             type: results.type || ''
         };
-        const isLocationEqualToOrigin = results.location.url === results.origin.url;
+        const isLocationEqualToOrigin =
+            results.location.url === results.origin.url;
 
         setData(newData);
         fetchLocation(
@@ -64,8 +69,33 @@ const Character = props => {
             isLocationEqualToOrigin
         );
 
+        fetchEpisodes(results.episode);
+
         if(!isLocationEqualToOrigin)
             fetchLocation(results.origin, setOrigin, setIsLoadingOrigin);
+    };
+
+    const fetchEpisodes = async (retrievedEpisodes) => {
+        setIsLoadingEpisodes(true);
+
+        if(!isNotEmptyArray(retrievedEpisodes)) {
+            setIsLoadingEpisodes(false);
+
+            return;
+        }
+
+        const list = retrievedEpisodes
+                        .map(episode => retrieveIdFromURL(episode));
+
+        const { data, status } = await retrieveMultipleEpisodes(list);
+
+        if(status !== 200 && !isNotEmptyArray(data)) {
+            setEpisodes([])
+
+            return;
+        }
+
+        setEpisodes(data);
     };
 
     const fetchLocation = async (
@@ -100,7 +130,6 @@ const Character = props => {
         setLoading(false);
 
         if(isLocationEqualToOrigin) {
-            console.log('are the same');
             setOrigin(newData);
             setIsLoadingOrigin(false);
         }
@@ -145,6 +174,20 @@ const Character = props => {
         );
     };
 
+    const renderEpisodes = () => {
+        // if(!isNotEmptyArray(retrievedEpisodes))
+        //     return <Fragment />;
+
+        return (
+            <List
+                inheritedList={episodes}
+                link="episode"
+                listTitle="Episodes"
+                useList={true}
+            />
+        )
+    };
+
     return (
         <Layout>
             <SEO title="Character Details" />
@@ -180,7 +223,9 @@ const Character = props => {
                                 </div>
                             </div>
                         </div>
-                        
+                        <div className="col-sm-12">
+                            {renderEpisodes()}
+                        </div>
                 </Container>
             </section>
         </Layout>
