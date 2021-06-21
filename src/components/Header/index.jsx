@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'gatsby';
-import Logo from '../Logo';
 import {
     Collapse,
     Nav,
@@ -10,23 +14,24 @@ import {
     NavbarToggler,
     NavItem,
 } from 'reactstrap';
+import Logo from '../Logo';
 
 const MENU_ITEMS = [
     {
         link: '/',
-        title: 'Home'
+        title: 'Home',
     },
     {
         link: '/characters',
-        title: 'Characters'
+        title: 'Characters',
     },
     {
         link: '/episodes',
-        title: 'Episodes'
+        title: 'Episodes',
     },
     {
         link: '/locations',
-        title: 'Locations'
+        title: 'Locations',
     },
 ];
 
@@ -34,24 +39,27 @@ const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const menuContainer = useRef(null);
 
-    const clickListener = useCallback(e => {
-        if(
-            isOpen
-            && menuContainer.current
-            && !menuContainer.current.contains(e.target)
-        ) {
-            setIsOpen(false);
-        }
-    }, [menuContainer, isOpen]);
+    const clickListener = useCallback(
+        e => {
+            if (
+                isOpen &&
+                menuContainer.current &&
+                !menuContainer.current.contains(e.target)
+            ) {
+                setIsOpen(false);
+            }
+        },
+        [menuContainer, isOpen]
+    );
 
     useEffect(() => {
-        if(document)
+        if (document)
             document.addEventListener('click', clickListener);
 
         return () => {
-            if(document)
+            if (document)
                 document.removeEventListener('click', clickListener);
-        }
+        };
     }, [menuContainer, isOpen, clickListener]);
 
     const toggle = () => {
@@ -63,14 +71,8 @@ const Header = () => {
     const renderMenuItems = () => {
         return MENU_ITEMS.map(item => {
             return (
-                <NavItem
-                    className="Header-item"
-                    key={uuidv4()}
-                >
-                    <Link
-                        className="Header-link"
-                        to={item.link}
-                    >
+                <NavItem className="Header-item" key={uuidv4()}>
+                    <Link className="Header-link" to={item.link}>
                         {item.title}
                     </Link>
                 </NavItem>
@@ -80,10 +82,7 @@ const Header = () => {
 
     return (
         <header className="Header">
-            <div
-                className="container"
-                ref={menuContainer}
-            >
+            <div className="container" ref={menuContainer}>
                 <Navbar dark expand="lg">
                     <NavbarBrand>
                         <Logo />
@@ -97,12 +96,9 @@ const Header = () => {
                         isOpen={isOpen}
                         navbar
                     >
-                        <Nav navbar>
-                            {renderMenuItems()}
-                        </Nav>
+                        <Nav navbar>{renderMenuItems()}</Nav>
                     </Collapse>
                 </Navbar>
-
                 <div className="Header-background" />
             </div>
         </header>

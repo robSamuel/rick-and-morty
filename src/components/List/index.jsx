@@ -1,28 +1,51 @@
-import React, { useState , useEffect, Fragment} from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { isNotEmptyArray } from '../../utils';
-import Card from '../Card';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Card from '../Card';
+import { isNotEmptyArray } from '../../utils';
 
 const initPagination = {
     count: 0,
-    pages: 0
+    pages: 0,
 };
 
 const List = props => {
     const [hasMore, setHasMore] = useState(true);
     const [list, setList] = useState([]);
     const [pagination, setPagination] = useState(initPagination);
-    const {
-        inheritedList,
-        link,
-        listTitle,
-        retrieveData,
-        useList
-    } = props;
+    const { inheritedList, link, listTitle, retrieveData, useList } =
+        props;
+
+    const fetchData = async () => {
+        const newPage = pagination.pages + 1;
+        const {
+            pagination: paginationData,
+            results,
+            status,
+        } = await retrieveData(newPage);
+
+        if (status === 200 && isNotEmptyArray(results)) {
+            const willHaveMore =
+                list.length <= paginationData.count &&
+                newPage <= paginationData.pages;
+
+            setList(prevList => {
+                return [...prevList, ...results];
+            });
+
+            setPagination(prevPagination => {
+                return {
+                    count: prevPagination.count + 1,
+                    pages: newPage,
+                };
+            });
+
+            setHasMore(willHaveMore);
+        }
+    };
 
     useEffect(() => {
-        if(!useList){
+        if (!useList) {
             fetchData();
         } else {
             setList(inheritedList);
@@ -32,47 +55,16 @@ const List = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inheritedList]);
 
-    const fetchData = async () => {
-        const newPage = pagination.pages + 1;
-        const {
-            pagination: paginationData,
-            results,
-            status
-        } = await retrieveData(newPage);
-
-        if(status === 200 && isNotEmptyArray(results)) {
-            const willHaveMore =
-                list.length <= paginationData.count
-                && newPage <= paginationData.pages;
-
-            setList(prevList => {
-                return [...prevList, ...results];
-            });
-
-            setPagination(prevPagination => {
-                return {
-                    count: prevPagination.count + 1,
-                    pages: newPage
-                };
-            });
-
-            setHasMore(willHaveMore);
-        }
-    };
-
     const renderTitle = () => {
-        if(!listTitle)
-            return <Fragment />;
+        if (!listTitle) return <Fragment />;
 
         return (
-            <label className="List-title">
-                {`${listTitle}:`}
-            </label>
-        )
+            <label className="List-title">{`${listTitle}:`}</label>
+        );
     };
 
     const renderList = () => {
-        if(isNotEmptyArray(list)) {
+        if (isNotEmptyArray(list)) {
             return list.map(item => {
                 const label = item.name || '';
 
@@ -84,7 +76,7 @@ const List = props => {
                         link={link}
                         title={label}
                     />
-                )
+                );
             });
         }
 
@@ -99,10 +91,7 @@ const List = props => {
         const containerId = `ScrollContainer-${link}`;
 
         return (
-            <div
-                className="List-container"
-                id={containerId}
-            >
+            <div className="List-container" id={containerId}>
                 <InfiniteScroll
                     className="List-scrollable"
                     dataLength={list.length}
@@ -118,11 +107,7 @@ const List = props => {
     };
 
     const renderGeneralList = () => {
-        return (
-            <div className="List">
-                {renderInfiniteScroll()}
-            </div>
-        );
+        return <div className="List">{renderInfiniteScroll()}</div>;
     };
 
     const renderTitledList = () => {
@@ -134,28 +119,23 @@ const List = props => {
         );
     };
 
-    return !listTitle
-        ? renderGeneralList()
-        : renderTitledList();
+    return !listTitle ? renderGeneralList() : renderTitledList();
 };
 
 List.defaultProps = {
     inheritedList: [],
     listTitle: '',
     retrieveData: () => {},
-    useList: false
+    useList: false,
 };
 
 List.propTypes = {
     inheritedList: PropTypes.array,
-    link: PropTypes.oneOf([
-        'character',
-        'episode',
-        'location']
-    ).isRequired,
+    link: PropTypes.oneOf(['character', 'episode', 'location'])
+        .isRequired,
     listTitle: PropTypes.string,
     retrieveData: PropTypes.func,
-    useList: PropTypes.bool
+    useList: PropTypes.bool,
 };
 
 export default List;

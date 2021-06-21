@@ -10,14 +10,11 @@ const Loading = props => {
         containerClass,
         size,
         style,
-        type
+        type,
     } = props;
 
     return (
-        <div
-            className={containerClass}
-            style={style}
-        >
+        <div className={containerClass} style={style}>
             <Spinner
                 className={className}
                 children={children}
@@ -36,7 +33,7 @@ Loading.defaultProps = {
     containerClass: '',
     size: 'md',
     style: {},
-    type: 'border'
+    type: 'border',
 };
 
 Loading.propTypes = {
@@ -50,11 +47,12 @@ Loading.propTypes = {
         'warning',
         'info',
         'light',
-        'dark']),
+        'dark',
+    ]),
     containerClass: PropTypes.string,
     size: PropTypes.oneOf(['sm', 'md', 'lg', 'xl']),
     style: PropTypes.object,
-    type: PropTypes.oneOf(['border', 'grow'])
+    type: PropTypes.oneOf(['border', 'grow']),
 };
 
 export default Loading;
