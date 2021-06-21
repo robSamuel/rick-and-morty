@@ -1,18 +1,16 @@
-import { httpClient } from '../httpClient';
+import httpClient from '../httpClient';
 
 const url = '/location/';
 
 export const retrieveLocations = async (page, options = {}) => {
-    const { name, type, dimension} = options;
+    const { name, type, dimension } = options;
     let endpointURL = `${url}?page=${page}`;
 
-    if(name)
-        endpointURL = `${endpointURL}&name=${name}`;
+    if (name) endpointURL = `${endpointURL}&name=${name}`;
 
-    if(type)
-        endpointURL = `${endpointURL}&type=${type}`;
+    if (type) endpointURL = `${endpointURL}&type=${type}`;
 
-    if(dimension)
+    if (dimension)
         endpointURL = `${endpointURL}&dimension=${dimension}`;
 
     try {
@@ -24,24 +22,24 @@ export const retrieveLocations = async (page, options = {}) => {
         return {
             pagination: data.info,
             results: data.results,
-            status
+            status,
         };
     } catch (error) {
         return { error };
     }
 };
 
-export const retrieveLocationDetail = async (id) => {
+export const retrieveLocationDetail = async id => {
     const endpointURL = `${url}${id}`;
 
     try {
         const { data, status } = await httpClient({
             method: 'GET',
-            url: endpointURL
+            url: endpointURL,
         });
 
         return { data, status };
     } catch (error) {
         return { error };
     }
-}
+};

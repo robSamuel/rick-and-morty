@@ -18,7 +18,8 @@ const Footer = () => {
                     <div className="col-12 col-md-6">
                         <div className="Footer-column d-flex h-100">
                             <span>
-                                © {new Date().getFullYear()}, Built with
+                                © {new Date().getFullYear()}, Built
+                                with
                                 {` `}
                                 <a
                                     className="Footer-link"
@@ -26,9 +27,9 @@ const Footer = () => {
                                 >
                                     Gatsby
                                 </a>
-                                    {` `}
-                                    and developed by
-                                    {` `}
+                                {` `}
+                                and developed by
+                                {` `}
                                 <a
                                     className="Footer-link"
                                     href="https://github.com/robSamuel"

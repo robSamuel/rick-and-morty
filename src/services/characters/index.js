@@ -1,4 +1,4 @@
-import { httpClient } from '../httpClient';
+import httpClient from '../httpClient';
 
 const endpointURL = '/character';
 
@@ -8,27 +8,22 @@ export const retrieveCharacters = async (page, options = {}) => {
         status = '',
         species = '',
         types = '',
-        gender = ''
+        gender = '',
     } = options;
     let url = `${endpointURL}?page=${page}`;
 
-    if(name)
-        url = `${url}&name=${name}`;
+    if (name) url = `${url}&name=${name}`;
 
-    if(status)
-        url = `${url}&status=${status}`;
+    if (status) url = `${url}&status=${status}`;
 
-    if(species)
-        url = `${url}&species=${species}`;
+    if (species) url = `${url}&species=${species}`;
 
-    if(types)
-        url = `${url}&types=${types}`;
+    if (types) url = `${url}&types=${types}`;
 
-    if(gender)
-        url = `${url}&gender=${gender}`;
+    if (gender) url = `${url}&gender=${gender}`;
 
     try {
-        const { data, status } = await httpClient({
+        const { data, status: statusCode } = await httpClient({
             method: 'GET',
             url,
         });
@@ -36,15 +31,15 @@ export const retrieveCharacters = async (page, options = {}) => {
         return {
             pagination: data.info,
             results: data.results,
-            status
+            status: statusCode,
         };
     } catch (error) {
         return { error };
     }
 };
 
-export const retrieveMultipleCharacters = async (ids) => {
-    const url = `${endpointURL}/${ids.join()}`
+export const retrieveMultipleCharacters = async ids => {
+    const url = `${endpointURL}/${ids.join()}`;
 
     try {
         const { data, status } = await httpClient({
@@ -54,14 +49,14 @@ export const retrieveMultipleCharacters = async (ids) => {
 
         return {
             results: data,
-            status
+            status,
         };
     } catch (error) {
         return { error };
     }
 };
 
-export const retrieveCharacterDetails = async (id) => {
+export const retrieveCharacterDetails = async id => {
     const url = `${endpointURL}/${id}`;
 
     try {
@@ -72,7 +67,7 @@ export const retrieveCharacterDetails = async (id) => {
 
         return {
             results: data,
-            status
+            status,
         };
     } catch (error) {
         return { error };

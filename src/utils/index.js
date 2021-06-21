@@ -8,10 +8,9 @@ export const isNotEmptyArray = arr =>
 export const getThumbnailUrl = (url, type) => {
     let thumbnail = null;
 
-    if(url)
-        return url;
+    if (url) return url;
 
-    switch(type) {
+    switch (type) {
         case 'character':
             thumbnail = defaultThumbnail;
             break;
@@ -33,11 +32,10 @@ export const getThumbnailUrl = (url, type) => {
 };
 
 export const retrieveIdFromURL = url => {
-    if(!url)
-        return 0;
+    if (!url) return 0;
 
     const parts = url.split('/');
-    const id = +parts[parts.length -1];
+    const id = +parts[parts.length - 1];
 
     return id;
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import {
     retrieveCharacters,
-    retrieveMultipleCharacters
+    retrieveMultipleCharacters,
 } from '../services/characters';
 import { isNotEmptyArray } from '../utils';
 import Card from '../components/Card';
@@ -12,34 +12,40 @@ import SEO from '../components/seo';
 const Characters = () => {
     const [featuredCharacters, setFeaturedCharacters] = useState([]);
 
-    useEffect(() => {
-        const ids = [];
-
-        for (let index = 0; index < 4; index++) {
-            ids.push(Math.floor(Math.random() * process.env.GATSBY_MAX_CHARACTERS_LENGTH));
-        }
-
-        fetchFeaturedCharacters(ids);
-    }, []);
-
-    const fetchData = async (pageNumber) => {
+    const fetchData = async pageNumber => {
         const data = await retrieveCharacters(pageNumber);
 
         return data;
     };
 
-    const fetchFeaturedCharacters = async (ids) => {
-        const { results, status } = await retrieveMultipleCharacters(ids);
+    const fetchFeaturedCharacters = async ids => {
+        const { results, status } = await retrieveMultipleCharacters(
+            ids
+        );
 
-        if(status !== 200 && !isNotEmptyArray(results))
-            return;
+        if (status !== 200 && !isNotEmptyArray(results)) return;
 
         setFeaturedCharacters(results);
     };
 
+    useEffect(() => {
+        const ids = [];
+
+        // eslint-disable-next-line no-plusplus
+        for (let index = 0; index < 4; index++) {
+            ids.push(
+                Math.floor(
+                    Math.random() *
+                        process.env.GATSBY_MAX_CHARACTERS_LENGTH
+                )
+            );
+        }
+
+        fetchFeaturedCharacters(ids);
+    }, []);
+
     const renderFeaturedCharacters = () => {
-        if(!isNotEmptyArray(featuredCharacters))
-            return <Fragment />;
+        if (!isNotEmptyArray(featuredCharacters)) return <Fragment />;
 
         return featuredCharacters.map(character => {
             return (
@@ -67,10 +73,7 @@ const Characters = () => {
                     </div>
                 </div>
                 <div className="container-fluid Characters-list">
-                    <List
-                        link="character"
-                        retrieveData={fetchData}
-                    />
+                    <List link="character" retrieveData={fetchData} />
                 </div>
             </section>
         </Layout>
