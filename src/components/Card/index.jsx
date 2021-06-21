@@ -4,12 +4,7 @@ import PropTypes from 'prop-types';
 import { getThumbnailUrl } from '../../utils';
 
 const Card = props => {
-    const {
-        id,
-        image,
-        link,
-        title
-    } = props;
+    const { id, image, link, title } = props;
 
     return (
         <div className="Card">
@@ -28,12 +23,8 @@ const Card = props => {
 Card.propTypes = {
     id: PropTypes.number.isRequired,
     image: PropTypes.string,
-    link: PropTypes.oneOf([
-        'character',
-        'episode',
-        'location']
-    ).isRequired,
-    title: PropTypes.string.isRequired
+    link: PropTypes.oneOf(['character', 'episode', 'location']).isRequired,
+    title: PropTypes.string.isRequired,
 };
 
 export default Card;

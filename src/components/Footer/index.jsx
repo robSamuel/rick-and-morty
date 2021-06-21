@@ -26,9 +26,9 @@ const Footer = () => {
                                 >
                                     Gatsby
                                 </a>
-                                    {` `}
-                                    and developed by
-                                    {` `}
+                                {` `}
+                                and developed by
+                                {` `}
                                 <a
                                     className="Footer-link"
                                     href="https://github.com/robSamuel"

@@ -3,17 +3,12 @@ import { httpClient } from '../httpClient';
 const url = '/episode';
 
 export const retrieveEpisodes = async (page, options = {}) => {
-    const {
-        name = '',
-        episode = 0
-    } = options;
+    const { name = '', episode = 0 } = options;
     let urlEndpoint = `${url}?page=${page}`;
 
-    if(name)
-        urlEndpoint = `${urlEndpoint}&name=${name}`;
+    if (name) urlEndpoint = `${urlEndpoint}&name=${name}`;
 
-    if(episode)
-    urlEndpoint = `${urlEndpoint}&episode=${episode}`;
+    if (episode) urlEndpoint = `${urlEndpoint}&episode=${episode}`;
 
     try {
         const { data, status } = await httpClient({
@@ -24,27 +19,27 @@ export const retrieveEpisodes = async (page, options = {}) => {
         return {
             pagination: data.info,
             results: data.results,
-            status
+            status,
         };
     } catch (error) {
         return { error };
     }
 };
 
-export const retrieveMultipleEpisodes = async (episodesList) => {
+export const retrieveMultipleEpisodes = async episodesList => {
     const urlEndpoint = `${url}/${episodesList.join()}`;
     console.log(urlEndpoint);
 
     try {
         const { data, status } = await httpClient({
             method: 'GET',
-            url: urlEndpoint
+            url: urlEndpoint,
         });
 
-        console.log(`data`, data)
+        console.log(`data`, data);
         return {
             data,
-            status
+            status,
         };
     } catch (error) {
         console.log(error);
