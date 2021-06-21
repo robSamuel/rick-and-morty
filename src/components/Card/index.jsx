@@ -20,10 +20,15 @@ const Card = props => {
     );
 };
 
+Card.defaultProps = {
+    image: '',
+};
+
 Card.propTypes = {
     id: PropTypes.number.isRequired,
     image: PropTypes.string,
-    link: PropTypes.oneOf(['character', 'episode', 'location']).isRequired,
+    link: PropTypes.oneOf(['character', 'episode', 'location'])
+        .isRequired,
     title: PropTypes.string.isRequired,
 };
 

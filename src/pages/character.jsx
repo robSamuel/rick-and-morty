@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { retrieveCharacterDetails } from '../services/characters';
 import { retrieveMultipleEpisodes } from '../services/episodes';
 import { retrieveLocationDetail } from '../services/locations';
@@ -33,17 +34,82 @@ const Character = props => {
     } = props;
     const id = state ? state.id : params.id;
 
-    useEffect(() => {
-        if (id) fetchData(id);
-    }, [id]);
+    const fetchEpisodes = async retrievedEpisodes => {
+        setIsLoadingEpisodes(true);
 
-    const fetchData = async id => {
+        if (!isNotEmptyArray(retrievedEpisodes)) {
+            setIsLoadingEpisodes(false);
+
+            return;
+        }
+
+        const list = retrievedEpisodes.map(episode =>
+            retrieveIdFromURL(episode)
+        );
+
+        const { data: multipleEpisodesData, status } =
+            await retrieveMultipleEpisodes(list);
+
+        if (
+            status !== 200 &&
+            !isNotEmptyArray(multipleEpisodesData)
+        ) {
+            setEpisodes([]);
+            setIsLoadingEpisodes(false);
+
+            return;
+        }
+
+        setEpisodes(multipleEpisodesData);
+        setIsLoadingEpisodes(false);
+    };
+
+    const fetchLocation = async (
+        locationData,
+        setInformation,
+        setLoading,
+        isLocationEqualToOrigin = false
+    ) => {
+        if (!locationData) {
+            setLoading(false);
+            return;
+        }
+
+        const locationId = retrieveIdFromURL(locationData.url);
+        const { data: retrievedLocation, status } =
+            await retrieveLocationDetail(locationId);
+
+        if (status !== 200 && !data) {
+            setLoading(false);
+            // TODO: Set something as default when no data is returned
+            return;
+        }
+
+        const newData = {
+            id: retrievedLocation.id || 0,
+            name: retrievedLocation.name || '',
+            dimension: retrievedLocation.dimension || '',
+            residentsCount: retrievedLocation.residents.length || 0,
+            type: retrievedLocation.type || '',
+        };
+
+        setInformation(newData);
+        setLoading(false);
+
+        if (isLocationEqualToOrigin) {
+            setOrigin(newData);
+            setIsLoadingOrigin(false);
+        }
+    };
+
+    const fetchData = async characterId => {
         setIsLoadingLocation(true);
         setIsLoadingOrigin(true);
 
-        const { results, status } = await retrieveCharacterDetails(id);
+        const { results, status } = await retrieveCharacterDetails(
+            characterId
+        );
 
-        console.log(status, results);
         if (status !== 200 && !results) return;
 
         const newData = {
@@ -69,71 +135,16 @@ const Character = props => {
         fetchEpisodes(results.episode);
 
         if (!isLocationEqualToOrigin)
-            fetchLocation(results.origin, setOrigin, setIsLoadingOrigin);
+            fetchLocation(
+                results.origin,
+                setOrigin,
+                setIsLoadingOrigin
+            );
     };
 
-    const fetchEpisodes = async retrievedEpisodes => {
-        setIsLoadingEpisodes(true);
-
-        if (!isNotEmptyArray(retrievedEpisodes)) {
-            setIsLoadingEpisodes(false);
-
-            return;
-        }
-
-        const list = retrievedEpisodes.map(episode =>
-            retrieveIdFromURL(episode)
-        );
-
-        const { data, status } = await retrieveMultipleEpisodes(list);
-
-        if (status !== 200 && !isNotEmptyArray(data)) {
-            setEpisodes([]);
-            setIsLoadingEpisodes(false);
-
-            return;
-        }
-
-        setEpisodes(data);
-        setIsLoadingEpisodes(false);
-    };
-
-    const fetchLocation = async (
-        location,
-        setInformation,
-        setLoading,
-        isLocationEqualToOrigin = false
-    ) => {
-        if (!location) {
-            setLoading(false);
-            return;
-        }
-
-        const id = retrieveIdFromURL(location.url);
-        const { data, status } = await retrieveLocationDetail(id);
-
-        if (status !== 200 && !data) {
-            setLoading(false);
-
-            return; //TODO: Set something as default when no data is returned
-        }
-
-        const newData = {
-            id: data.id || 0,
-            name: data.name || '',
-            dimension: data.dimension || '',
-            residentsCount: data.residents.length || 0,
-            type: data.type || '',
-        };
-
-        setInformation(newData);
-        setLoading(false);
-
-        if (isLocationEqualToOrigin) {
-            setOrigin(newData);
-            setIsLoadingOrigin(false);
-        }
-    };
+    useEffect(() => {
+        if (id) fetchData(id);
+    }, [id]);
 
     const renderLine = (label, value) => {
         if (!value) return <Fragment />;
@@ -141,18 +152,20 @@ const Character = props => {
         return (
             <div>
                 <label className="CharacterDetails-label">{`${label}: `}</label>
-                <span className="CharacterDetails-value">{value}</span>
+                <span className="CharacterDetails-value">
+                    {value}
+                </span>
             </div>
         );
     };
 
     const renderSpinner = () => (
-            <Spinner
-                className="CharacterDetails-location-spinner"
-                containerClass="CharacterDetails-location-spinner-container"
-                type="grow"
-            />
-        );
+        <Spinner
+            className="CharacterDetails-location-spinner"
+            containerClass="CharacterDetails-location-spinner-container"
+            type="grow"
+        />
+    );
 
     const renderLocation = (label, info, loading) => {
         if (loading) return renderSpinner();
@@ -171,7 +184,6 @@ const Character = props => {
     };
 
     const renderEpisodes = () => {
-        console.log('fasdf');
         if (isLoadingEpisodes) return renderSpinner();
 
         return (
@@ -179,7 +191,7 @@ const Character = props => {
                 inheritedList={episodes}
                 link="episode"
                 listTitle="Episodes featuring this character"
-                useList={true}
+                useList
             />
         );
     };
@@ -224,11 +236,23 @@ const Character = props => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-12">{renderEpisodes()}</div>
+                    <div className="col-sm-12">
+                        {renderEpisodes()}
+                    </div>
                 </Container>
             </section>
         </Layout>
     );
+};
+
+Character.defaultProps = {
+    location: {},
+    params: {},
+};
+
+Character.propTypes = {
+    location: PropTypes.object,
+    params: PropTypes.object,
 };
 
 export default Character;

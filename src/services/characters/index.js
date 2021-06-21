@@ -1,4 +1,4 @@
-import { httpClient } from '../httpClient';
+import httpClient from '../httpClient';
 
 const endpointURL = '/character';
 
@@ -23,7 +23,7 @@ export const retrieveCharacters = async (page, options = {}) => {
     if (gender) url = `${url}&gender=${gender}`;
 
     try {
-        const { data, status } = await httpClient({
+        const { data, status: statusCode } = await httpClient({
             method: 'GET',
             url,
         });
@@ -31,7 +31,7 @@ export const retrieveCharacters = async (page, options = {}) => {
         return {
             pagination: data.info,
             results: data.results,
-            status,
+            status: statusCode,
         };
     } catch (error) {
         return { error };

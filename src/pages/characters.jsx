@@ -12,20 +12,6 @@ import SEO from '../components/seo';
 const Characters = () => {
     const [featuredCharacters, setFeaturedCharacters] = useState([]);
 
-    useEffect(() => {
-        const ids = [];
-
-        for (let index = 0; index < 4; index++) {
-            ids.push(
-                Math.floor(
-                    Math.random() * process.env.GATSBY_MAX_CHARACTERS_LENGTH
-                )
-            );
-        }
-
-        fetchFeaturedCharacters(ids);
-    }, []);
-
     const fetchData = async pageNumber => {
         const data = await retrieveCharacters(pageNumber);
 
@@ -33,12 +19,30 @@ const Characters = () => {
     };
 
     const fetchFeaturedCharacters = async ids => {
-        const { results, status } = await retrieveMultipleCharacters(ids);
+        const { results, status } = await retrieveMultipleCharacters(
+            ids
+        );
 
         if (status !== 200 && !isNotEmptyArray(results)) return;
 
         setFeaturedCharacters(results);
     };
+
+    useEffect(() => {
+        const ids = [];
+
+        // eslint-disable-next-line no-plusplus
+        for (let index = 0; index < 4; index++) {
+            ids.push(
+                Math.floor(
+                    Math.random() *
+                        process.env.GATSBY_MAX_CHARACTERS_LENGTH
+                )
+            );
+        }
+
+        fetchFeaturedCharacters(ids);
+    }, []);
 
     const renderFeaturedCharacters = () => {
         if (!isNotEmptyArray(featuredCharacters)) return <Fragment />;

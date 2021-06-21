@@ -1,4 +1,4 @@
-import { httpClient } from '../httpClient';
+import httpClient from '../httpClient';
 
 const url = '/episode';
 
@@ -28,21 +28,19 @@ export const retrieveEpisodes = async (page, options = {}) => {
 
 export const retrieveMultipleEpisodes = async episodesList => {
     const urlEndpoint = `${url}/${episodesList.join()}`;
-    console.log(urlEndpoint);
 
     try {
         const { data, status } = await httpClient({
             method: 'GET',
             url: urlEndpoint,
         });
+        const processData = Array.isArray(data) ? data : [data];
 
-        console.log(`data`, data);
         return {
-            data,
+            data: processData,
             status,
         };
     } catch (error) {
-        console.log(error);
         return { error };
     }
 };

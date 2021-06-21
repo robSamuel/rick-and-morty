@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { Spinner } from 'reactstrap';
 
 const Loading = props => {
-    const { className, children, color, containerClass, size, style, type } =
-        props;
+    const {
+        className,
+        children,
+        color,
+        containerClass,
+        size,
+        style,
+        type,
+    } = props;
 
     return (
         <div className={containerClass} style={style}>

@@ -1,4 +1,4 @@
-import { httpClient } from '../httpClient';
+import httpClient from '../httpClient';
 
 const url = '/location/';
 
@@ -10,7 +10,8 @@ export const retrieveLocations = async (page, options = {}) => {
 
     if (type) endpointURL = `${endpointURL}&type=${type}`;
 
-    if (dimension) endpointURL = `${endpointURL}&dimension=${dimension}`;
+    if (dimension)
+        endpointURL = `${endpointURL}&dimension=${dimension}`;
 
     try {
         const { data, status } = await httpClient({

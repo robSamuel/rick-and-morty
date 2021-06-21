@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { isNotEmptyArray } from '../../utils';
-import Card from '../Card';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Card from '../Card';
+import { isNotEmptyArray } from '../../utils';
 
 const initPagination = {
     count: 0,
@@ -13,18 +13,8 @@ const List = props => {
     const [hasMore, setHasMore] = useState(true);
     const [list, setList] = useState([]);
     const [pagination, setPagination] = useState(initPagination);
-    const { inheritedList, link, listTitle, retrieveData, useList } = props;
-
-    useEffect(() => {
-        if (!useList) {
-            fetchData();
-        } else {
-            setList(inheritedList);
-            setHasMore(false);
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [inheritedList]);
+    const { inheritedList, link, listTitle, retrieveData, useList } =
+        props;
 
     const fetchData = async () => {
         const newPage = pagination.pages + 1;
@@ -54,10 +44,23 @@ const List = props => {
         }
     };
 
+    useEffect(() => {
+        if (!useList) {
+            fetchData();
+        } else {
+            setList(inheritedList);
+            setHasMore(false);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inheritedList]);
+
     const renderTitle = () => {
         if (!listTitle) return <Fragment />;
 
-        return <label className="List-title">{`${listTitle}:`}</label>;
+        return (
+            <label className="List-title">{`${listTitle}:`}</label>
+        );
     };
 
     const renderList = () => {
@@ -78,7 +81,9 @@ const List = props => {
         }
 
         return (
-            <span className="List-no-items">There are no items available.</span>
+            <span className="List-no-items">
+                There are no items available.
+            </span>
         );
     };
 
@@ -126,7 +131,8 @@ List.defaultProps = {
 
 List.propTypes = {
     inheritedList: PropTypes.array,
-    link: PropTypes.oneOf(['character', 'episode', 'location']).isRequired,
+    link: PropTypes.oneOf(['character', 'episode', 'location'])
+        .isRequired,
     listTitle: PropTypes.string,
     retrieveData: PropTypes.func,
     useList: PropTypes.bool,

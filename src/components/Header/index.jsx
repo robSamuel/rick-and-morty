@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'gatsby';
-import Logo from '../Logo';
 import {
     Collapse,
     Nav,
@@ -10,6 +14,7 @@ import {
     NavbarToggler,
     NavItem,
 } from 'reactstrap';
+import Logo from '../Logo';
 
 const MENU_ITEMS = [
     {
@@ -48,10 +53,12 @@ const Header = () => {
     );
 
     useEffect(() => {
-        if (document) document.addEventListener('click', clickListener);
+        if (document)
+            document.addEventListener('click', clickListener);
 
         return () => {
-            if (document) document.removeEventListener('click', clickListener);
+            if (document)
+                document.removeEventListener('click', clickListener);
         };
     }, [menuContainer, isOpen, clickListener]);
 
@@ -80,7 +87,10 @@ const Header = () => {
                     <NavbarBrand>
                         <Logo />
                     </NavbarBrand>
-                    <NavbarToggler onClick={toggle} className="mr-2" />
+                    <NavbarToggler
+                        onClick={toggle}
+                        className="mr-2"
+                    />
                     <Collapse
                         className="justify-content-end"
                         isOpen={isOpen}
@@ -89,7 +99,6 @@ const Header = () => {
                         <Nav navbar>{renderMenuItems()}</Nav>
                     </Collapse>
                 </Navbar>
-
                 <div className="Header-background" />
             </div>
         </header>

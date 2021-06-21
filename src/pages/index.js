@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { retrieveCharacters } from '../services/characters';
-import { retrieveEpisodes } from '../services/episodes';
-import { retrieveLocations } from '../services/locations';
+import {
+    Nav,
+    NavItem,
+    NavLink,
+    TabContent,
+    TabPane,
+} from 'reactstrap';
 import Layout from '../components/Layout';
 import List from '../components/List';
 import SEO from '../components/seo';
-import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
+import { retrieveCharacters } from '../services/characters';
+import { retrieveEpisodes } from '../services/episodes';
+import { retrieveLocations } from '../services/locations';
 
 const IndexPage = () => {
     const [activeTab, setActiveTab] = useState('1');
@@ -77,7 +83,10 @@ const IndexPage = () => {
                             />
                         </TabPane>
                         <TabPane tabId="2">
-                            <List link="episode" retrieveData={fetchEpisodes} />
+                            <List
+                                link="episode"
+                                retrieveData={fetchEpisodes}
+                            />
                         </TabPane>
                         <TabPane tabId="3">
                             <List
