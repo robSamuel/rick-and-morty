@@ -39,3 +39,13 @@ export const retrieveIdFromURL = url => {
 
     return id;
 };
+
+export const getRandomFeaturedIds = (maxLength, idsLength = 4) => {
+    const ids = [];
+
+    // eslint-disable-next-line no-plusplus
+    for (let index = 0; index < idsLength; index++)
+        ids.push(Math.floor(Math.random() * maxLength));
+
+    return ids;
+};

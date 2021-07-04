@@ -3,7 +3,7 @@ import {
     retrieveCharacters,
     retrieveMultipleCharacters,
 } from '../services/characters';
-import { isNotEmptyArray } from '../utils';
+import { getRandomFeaturedIds, isNotEmptyArray } from '../utils';
 import Card from '../components/Card';
 import Layout from '../components/Layout';
 import List from '../components/List';
@@ -29,17 +29,9 @@ const Characters = () => {
     };
 
     useEffect(() => {
-        const ids = [];
-
-        // eslint-disable-next-line no-plusplus
-        for (let index = 0; index < 4; index++) {
-            ids.push(
-                Math.floor(
-                    Math.random() *
-                        process.env.GATSBY_MAX_CHARACTERS_LENGTH
-                )
-            );
-        }
+        const ids = getRandomFeaturedIds(
+            process.env.GATSBY_MAX_CHARACTERS_LENGTH
+        );
 
         fetchFeaturedCharacters(ids);
     }, []);
@@ -63,7 +55,7 @@ const Characters = () => {
     return (
         <Layout>
             <SEO title="Characters List" />
-            <section className="Characters">
+            <section>
                 <div className="container-fluid FeaturedCharacters">
                     <span className="FeaturedCharacters-title">
                         Featured Characters:
@@ -72,7 +64,7 @@ const Characters = () => {
                         {renderFeaturedCharacters()}
                     </div>
                 </div>
-                <div className="container-fluid Characters-list">
+                <div className="container-fluid m-top-50">
                     <List link="character" retrieveData={fetchData} />
                 </div>
             </section>
