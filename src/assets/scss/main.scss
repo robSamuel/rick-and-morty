@@ -1,18 +1,19 @@
 // External styles
-@import "./vendor/vendor.scss";
+@import './vendor/vendor.scss';
 
 // Base styles
-@import "./base/base.scss";
+@import './base/base.scss';
 
 // Components
-@import "./components/card.scss";
-@import "./components/footer.scss";
-@import "./components/header.scss";
-@import "./components/layout.scss";
-@import "./components/list.scss";
-@import "./components/logo.scss";
+@import './components/card.scss';
+@import './components/footer.scss';
+@import './components/header.scss';
+@import './components/layout.scss';
+@import './components/list.scss';
+@import './components/logo.scss';
 
 // Pages
-@import "./pages/home.scss";
-@import "./pages/character.scss";
-@import "./pages/characters.scss";
+@import './pages/home.scss';
+@import './pages/character.scss';
+@import './pages/characters.scss';
+@import './pages/episodes.scss';

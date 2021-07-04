@@ -57,7 +57,7 @@ const Characters = () => {
             <SEO title="Characters List" />
             <section>
                 <div className="container-fluid FeaturedCharacters">
-                    <span className="FeaturedCharacters-title">
+                    <span className="list-title">
                         Featured Characters:
                     </span>
                     <div className="FeaturedCharacters-list">

@@ -1,17 +1,12 @@
-.FeaturedCharacters {
+.FeaturedEpisodes {
     align-items: center;
     display: flex;
     flex-direction: column;
     padding: 0 25px;
 
     &-list {
-        align-items: flex-start;
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         justify-content: center;
-    }
-
-    .Card {
-        display: inline-block;
     }
 }
