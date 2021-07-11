@@ -3,11 +3,7 @@ import {
     retrieveEpisodes,
     retrieveMultipleEpisodes,
 } from '../services/episodes';
-import {
-    getRandomFeaturedIds,
-    getThumbnailUrl,
-    isNotEmptyArray,
-} from '../utils';
+import { getRandomFeaturedIds, isNotEmptyArray } from '../utils';
 import Card from '../components/Card';
 import Layout from '../components/Layout';
 import List from '../components/List';
