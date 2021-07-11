@@ -5,10 +5,15 @@
  */
 
 // You can delete this file if you're not using it
-exports.createPages = function ({ actions }) {
-    actions.createPage({
-        path: 'character',
+const path = require('path');
+
+exports.createPages = ({ actions }) => {
+    const { createPage } = actions;
+    const characterPage = path.resolve('./src/pages/character.jsx');
+
+    createPage({
+        path: '/character',
         matchPath: '/character/:id',
-        component: require.resolve('./src/pages/character.jsx'),
+        component: characterPage,
     });
 };
